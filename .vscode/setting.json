@@ -1,0 +1,5 @@
+{
+    "cmake.debugConfig": {
+        "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe"
+    }
+}
