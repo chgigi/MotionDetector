@@ -1,28 +1,27 @@
 #include "camera.hpp"
 
 
-camera::camera(int id) : m_id(id)
+camera::camera(int id, logger::Logger logger) : m_id(id), m_logger(logger)
 {}
 
 camera::~camera()
 {}
 
 bool camera::open() {
-    cv::Mat frame;
-    cv::VideoCapture cap;
-    cap.open(m_id, cv::CAP_ANY);
-    for (;;) {
-        // wait for a new frame from camera and store it into 'frame'
-        cap.read(frame);
-        // check if we succeeded
-        if (frame.empty()) {
-            std::cerr << "ERROR! blank frame grabbed\n";
-            break;
-        }
-        // show live and wait for a key with timeout long enough to show images
-        imshow("Live", frame);
-        if (cv::waitKey(5) >= 0)
-            break;
+    m_cam.open(m_id, cv::CAP_ANY);
+    if (!m_cam.isOpened()) {
+        m_logger.add_log(0, "Failed to open Camera");
+        return false;
     }
+    m_logger.add_log(3, "Success to open the camera");
     return true;
+}
+
+cv::Mat camera::get_frame() {
+    cv::Mat frame;
+    m_cam.read(frame);
+    if (frame.empty()) {
+        m_logger.add_log(0, "Cannot get the last frame");
+    }
+    return frame;
 }
