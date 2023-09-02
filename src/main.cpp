@@ -15,7 +15,7 @@ int main()
         for (;;) {
             auto frame = cam.get_frame();
             cv::imshow("sncf", frame);
-             if (cv::waitKey(5) >= 0)
+            if (cv::waitKey(5) >= 0)
                 break;
         }
     }
